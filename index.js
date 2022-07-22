@@ -36,18 +36,23 @@ app.get("/api/", function (req, res) {
 app.get("/api/:date?", function (req, res) {
   console.log(req.params.date);
   let dt_obj = new Date(req.params.date);
-
-  if (isNaN(Date.parse(req.params.date))) {
-    if (!isNaN(Date.parse(parseInt(req.params.date)))) {
-      dt_obj = new Date(parseInt(req.params.date));
-    } else {
-      res.json({error: "Invalid Date"});
-    }
+  console.log(Date.parse(req.params.date));
+  if (isNaN(dt_obj)) {
+   dt_obj = new Date(parseInt(req.params.date)); //console.log(isNaN(Date.parse(parseInt(req.params.date))));
+    // if (!isNaN(Date.parse(Number(req.params.date)))) {
+    //   dt_obj = new Date(parseInt(req.params.date));
+    // } else {
+    //   res.json({error: "Invalid Date"});
+    // }
   
   }
-  let dt_utc = dt_obj.toUTCString();
+  if (isNaN(dt_obj)) {
+    res.json({error: "Invalid Date"});
+  } else {
+      let dt_utc = dt_obj.toUTCString();
   res.json({unix: dt_obj.getTime(),
            utc: dt_utc});
+  }
 });
 
 
